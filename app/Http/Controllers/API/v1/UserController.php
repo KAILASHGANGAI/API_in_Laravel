@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\v1;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    
+
     public function index()
     {
         $users = User::with('roles')->get();
@@ -27,6 +28,7 @@ class UserController extends Controller
             $user = Auth::user();
             $token = $user->createToken('API Token')->plainTextToken;
             return response()->json([
+                'version' => 'v1',
                 'status' => 'Login Successfuly',
                 'access_token' => $token,
                 'username' => $user->name
@@ -43,5 +45,17 @@ class UserController extends Controller
     {
         $model = User::create($req->all());
         return $model;
+    }
+
+
+    public function logout()
+    {
+        Auth::user()->tokens->each(function ($token, $key) {
+            $token->delete();
+        });
+
+        Auth::logout();
+
+        return response()->json(['message' => 'Logout Successfully']);
     }
 }

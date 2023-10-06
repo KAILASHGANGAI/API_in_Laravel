@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\v2;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\BlogCollection;
 use App\Http\Resources\BlogResource;
+use App\Http\Resources\UserCollection;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Matcher\Contains;
 
 class BlogController extends Controller
 {
     public function index()
     {
         $blogs = Blog::all();
-        return new BlogResource($blogs);
+        return new BlogCollection($blogs);
     }
     public function store(Request $request)
     {
