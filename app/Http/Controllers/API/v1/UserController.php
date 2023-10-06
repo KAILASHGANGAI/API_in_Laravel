@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\v1;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
@@ -27,6 +28,7 @@ class UserController extends Controller
             $user = Auth::user();
             $token = $user->createToken('API Token')->plainTextToken;
             return response()->json([
+                'version' => 'v1',
                 'status' => 'Login Successfuly',
                 'access_token' => $token,
                 'username' => $user->name

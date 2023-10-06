@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\v1;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\BlogResource;
 use App\Models\Blog;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::all();
-        return new BlogResource($blogs);
+        return  BlogResource::collection($blogs);
     }
     public function store(Request $request)
     {
@@ -25,10 +26,12 @@ class BlogController extends Controller
         $model = Blog::create($validated);
         if ($model) {
             return response()->json([
+                'version' => 'v1',
                 'mesage' => "Blog Created Successfully"
             ]);
         } else {
             return response()->json([
+                'version' => 'v1',
                 'mesage' => "Blog Not Created. try Again Later"
             ]);
         }
