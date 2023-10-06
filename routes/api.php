@@ -10,6 +10,7 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/users', [UserController::class, 'index']);
-    Route::apiResource('/blog',BlogController::class);
+    Route::apiResource('/blog', BlogController::class);
+    Route::get('/logout', [UserController::class, 'logout']);
+    
 });
-

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    
+
     public function index()
     {
         $users = User::with('roles')->get();
@@ -43,5 +43,17 @@ class UserController extends Controller
     {
         $model = User::create($req->all());
         return $model;
+    }
+
+
+    public function logout()
+    {
+        Auth::user()->tokens->each(function ($token, $key) {
+            $token->delete();
+        });
+
+        Auth::logout();
+
+        return response()->json(['message' => 'Logout Successfully']);
     }
 }
